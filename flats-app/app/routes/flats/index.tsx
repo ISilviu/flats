@@ -1,28 +1,15 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
-
-type Flat = {
-    title: string;
-    imageUrl: string;
-};
+import { getFlats } from "~/models/flat.server";
 
 type LoaderData = {
-    flats: Array<Flat>;
+    flats: Awaited<ReturnType<typeof getFlats>>;
 };
 
 export const loader = async () => {
     return json<LoaderData>({
-        flats: [
-            {
-                title: 'The best apartment in Prague',
-                imageUrl: 'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg'
-            },
-            {
-                title: 'Best flats in Plsen!',
-                imageUrl: 'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg'
-            }
-        ]
+        flats: await getFlats(),
     });
 };
 
@@ -32,9 +19,9 @@ export default function Flats() {
     return (
         <div>
             {flats.map(flat => (
-                <React.Fragment key={flat.title}>
+                <React.Fragment key={flat.id}>
                     <h1>{flat.title}</h1>
-                    <img src={flat.imageUrl} alt={flat.title} />
+                    <img src={flat.image_url} alt={flat.title} />
                 </React.Fragment>
             ))}
         </div>

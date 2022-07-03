@@ -18,7 +18,11 @@ export default function Flats() {
   const { flats } = useLoaderData() as LoaderData;
 
   return (
-    <Stack spacing={2} maxHeight="100vh" alignItems="center">
+    <Stack
+      spacing={2}
+      pt={10}
+      maxHeight="100vh" alignItems="center"
+    >
       <Grid
         container
         rowGap={3}

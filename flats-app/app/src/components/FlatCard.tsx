@@ -8,7 +8,7 @@ type FlatCardProps = {
 
 export default function FlatCard({ title, imageUrl }: FlatCardProps) {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ width: '100%' }}>
             <CardActionArea>
                 <CardMedia
                     component="img"

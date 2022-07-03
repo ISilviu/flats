@@ -1,17 +1,19 @@
 import { PrismaClient } from '@prisma/client'
+import { range } from 'lodash';
 const prisma = new PrismaClient()
 
 async function main() {
-    [
-        {
-            title: 'The best apartment in Prague',
-            image_url: 'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg',
-        },
-        {
-            title: 'Best flats in Plsen!',
-            image_url: 'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg'
-        }
-    ].forEach(async flat => await prisma.flat.create({ data: flat }));
+
+    range(1, 201).forEach(async index => {
+        await prisma.flat.create({
+            data: {
+                title: `Flat number ${index}`,
+                image_url: index % 2 == 0 ?
+                    'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg' :
+                    'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg',
+            },
+        });
+    });
 }
 
 main()

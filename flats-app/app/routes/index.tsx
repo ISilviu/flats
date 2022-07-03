@@ -19,7 +19,6 @@ export default function Flats() {
 
   return (
     <Stack spacing={2} maxHeight="100vh" alignItems="center">
-      <Typography variant="h1">Flats - best flats in town</Typography>
       <Grid
         container
         rowGap={3}

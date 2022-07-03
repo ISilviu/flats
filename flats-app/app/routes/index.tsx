@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Pagination, Stack, Typography } from "@mui/material";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getFlats } from "~/models/flat.server";
@@ -18,9 +18,16 @@ export default function Flats() {
   const { flats } = useLoaderData() as LoaderData;
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2} maxHeight="100vh" alignItems="center">
       <Typography variant="h1">Flats - best flats in town</Typography>
-      <Grid container rowGap={3} columnGap={1.5} display="flex" justifyContent="center">
+      <Grid
+        container
+        rowGap={3}
+        columnGap={1.5}
+        display="flex"
+        justifyContent="center"
+        overflow="auto"
+      >
         {flats.map(flat => (
           <Grid item xs={12} md={6} lg={3} key={flat.id} display="flex" justifyContent="center">
             <FlatCard
@@ -30,6 +37,7 @@ export default function Flats() {
           </Grid>
         ))}
       </Grid>
+      <Pagination count={10} />
     </Stack>
   );
 }

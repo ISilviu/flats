@@ -21,7 +21,8 @@ export default function Flats() {
     <Stack
       spacing={2}
       pt={10}
-      maxHeight="100vh" alignItems="center"
+      maxHeight="100vh"
+      alignItems="center"
     >
       <Grid
         container

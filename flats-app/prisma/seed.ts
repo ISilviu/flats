@@ -8,9 +8,9 @@ async function main() {
         await prisma.flat.create({
             data: {
                 title: `Flat number ${index}`,
-                image_url: index % 2 == 0 ?
+                image_url: index % 2 === 0 ?
                     'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg' :
-                    'https://img.staticmb.com/mbcontent//images/uploads/2021/7/flat-vs-independent-house.jpg',
+                    'https://d18-a.sdn.cz/d_18/c_img_gZ_o/gJLEkw.jpeg?fl=res,400,300,3|shr,,20|jpg,90',
             },
         });
     });

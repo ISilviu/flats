@@ -36,7 +36,11 @@ export default function Flats() {
           </Grid>
         ))}
       </Grid>
-      <Pagination count={10} sx={{ py: 1 }} />
+      <Pagination
+        count={10}
+        sx={{ py: 1 }}
+        color="primary"
+      />
     </Stack>
   );
 }

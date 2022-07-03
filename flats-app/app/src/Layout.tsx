@@ -1,13 +1,23 @@
+import { Box, AppBar, Toolbar, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
+    <>
+      <AppBar position="absolute">
+        <Toolbar disableGutters>
+          <SvgIcon
+            component={ApartmentIcon}
+            fontSize="large"
+            sx={{ ml: 2 }}
+          />
+          <Typography pl={2}>Flats App</Typography>
+        </Toolbar>
+      </AppBar>
+      <Box>
         {children}
       </Box>
-    </Container>
+    </>
   );
 }

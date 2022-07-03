@@ -1,3 +1,4 @@
+import { Box, Chip, Stack, Typography } from "@mui/material";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
@@ -17,13 +18,15 @@ export default function Flats() {
     const { flats } = useLoaderData() as LoaderData;
 
     return (
-        <div>
+        <Stack>
             {flats.map(flat => (
                 <React.Fragment key={flat.id}>
-                    <h1>{flat.title}</h1>
-                    <img src={flat.image_url} alt={flat.title} />
+                    <Typography variant="h4">{flat.title}</Typography>
+                    <Box borderRadius={1} bgcolor="primary">
+                        <img src={flat.image_url} alt={flat.title} />
+                    </Box>
                 </React.Fragment>
             ))}
-        </div>
+        </Stack>
     );
 }

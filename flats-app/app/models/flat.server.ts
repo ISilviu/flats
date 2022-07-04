@@ -8,8 +8,13 @@ type FlatsPaginationOptions = {
 const prisma = new PrismaClient();
 
 export async function getFlats({ pageSize, pageNumber }: FlatsPaginationOptions) {
+    let databasePageNumber = pageNumber - 1;
+    if (databasePageNumber < 0) {
+        databasePageNumber = 0;
+    }
+
     return prisma.flat.findMany({
-        skip: pageSize * pageNumber,
+        skip: pageSize * databasePageNumber,
         take: pageSize,
         orderBy: {
             id: 'asc',

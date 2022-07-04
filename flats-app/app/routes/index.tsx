@@ -1,4 +1,6 @@
 import { Button, Card, Stack, Typography } from "@mui/material";
+import { Link } from "@remix-run/react";
+import AppLink from "~/src/components/AppLink";
 
 type InfoCardData = {
   title: string;
@@ -34,11 +36,13 @@ export default function Flats() {
         <Typography margin={0} variant="h1" fontWeight={500}>Flat rental, but better</Typography>
         <Typography margin={0} variant="h5">Rent your next dream flat now</Typography>
       </Stack>
-      <Button variant="contained">
-        <Typography p={1.1}>
-          See available flats
-        </Typography>
-      </Button>
+      <AppLink to="/flats">
+        <Button variant="contained">
+          <Typography p={1.1}>
+            See available flats
+          </Typography>
+        </Button>
+      </AppLink>
       <Stack direction="row" spacing={3.5} pt={4}>
         <InfoCard title="In the Czech Republic" />
         <InfoCard title="200 flats available" />

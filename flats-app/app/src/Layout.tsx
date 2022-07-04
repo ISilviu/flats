@@ -1,6 +1,7 @@
-import { Box, AppBar, Toolbar, SvgIcon, Typography } from '@mui/material';
+import { Box, AppBar, Toolbar, SvgIcon, Typography, Link } from '@mui/material';
 import * as React from 'react';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import AppLink from './components/AppLink';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,7 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             fontSize="large"
             sx={{ ml: 2 }}
           />
-          <Typography pl={2}>Flatr</Typography>
+          <AppLink to="/">
+            <Typography pl={2}>Flatr</Typography>
+          </AppLink>
         </Toolbar>
       </AppBar>
       <Box height="100vh">

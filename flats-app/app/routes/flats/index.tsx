@@ -25,10 +25,15 @@ const extractSearchParam = (searchParams: URLSearchParams, key: string, defaultV
     return parameterValue
 };
 
+const parseIntWithDefault = (number: string, defaultValue: number) => {
+    const parsed = parseInt(number);
+    return Number.isNaN(parsed) ? defaultValue : parsed;
+};
+
 export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
-    const pageNumber = parseInt(extractSearchParam(url.searchParams, 'page', '1'));
-    const pageSize = parseInt(extractSearchParam(url.searchParams, 'pageSize', `${defaultPageSize}`));
+    const pageNumber = parseIntWithDefault(extractSearchParam(url.searchParams, 'page', '1'), 1);
+    const pageSize = parseIntWithDefault(extractSearchParam(url.searchParams, 'pageSize', `${defaultPageSize}`), defaultPageSize);
 
     return json<LoaderData>({
         flats: await getFlats({
@@ -44,8 +49,8 @@ export default function Flats() {
 
     const [params, setSearchParams] = useSearchParams();
 
-    const pageNumber = parseInt(params.get('page') ?? '1');
-    const pageSize = parseInt(params.get('pageSize') ?? `${defaultPageSize}`);
+    const pageNumber = parseIntWithDefault(params.get('page') ?? '1', 1);
+    const pageSize = parseIntWithDefault(params.get('pageSize') ?? `${defaultPageSize}`, defaultPageSize);
 
     const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
 

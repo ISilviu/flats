@@ -5,17 +5,21 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AppBar position="absolute">
+      <AppBar
+        position="absolute"
+        color="transparent"
+        elevation={0}
+      >
         <Toolbar disableGutters>
           <SvgIcon
             component={ApartmentIcon}
             fontSize="large"
             sx={{ ml: 2 }}
           />
-          <Typography pl={2}>Flats App</Typography>
+          <Typography pl={2}>Flatr</Typography>
         </Toolbar>
       </AppBar>
-      <Box>
+      <Box height="100vh">
         {children}
       </Box>
     </>

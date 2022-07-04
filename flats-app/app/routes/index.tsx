@@ -1,51 +1,48 @@
-import { Grid, Pagination, Stack, Typography } from "@mui/material";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getFlats } from "~/models/flat.server";
-import FlatCard from "~/src/components/FlatCard";
+import { Button, Card, Stack, Typography } from "@mui/material";
 
-type LoaderData = {
-  flats: Awaited<ReturnType<typeof getFlats>>;
-};
+type InfoCardData = {
+  title: string;
+}
 
-export const loader = async () => {
-  return json<LoaderData>({
-    flats: await getFlats(),
-  });
-};
+function InfoCard({ title }: InfoCardData) {
+  return (
+    <Card
+      raised
+      sx={{
+        p: 1.5,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 250,
+      }}
+    >
+      <Typography color="CaptionText">{title}</Typography>
+    </Card>
+  );
+}
 
 export default function Flats() {
-  const { flats } = useLoaderData() as LoaderData;
-
   return (
     <Stack
-      spacing={2}
-      pt={10}
-      maxHeight="100vh"
+      height="100%"
+      width="100%"
+      justifyContent="center"
       alignItems="center"
+      spacing={3.5}
     >
-      <Grid
-        container
-        rowGap={3}
-        columnGap={1.5}
-        display="flex"
-        justifyContent="center"
-        overflow="auto"
-      >
-        {flats.map(flat => (
-          <Grid item xs={12} md={6} lg={3} key={flat.id} display="flex" justifyContent="center">
-            <FlatCard
-              title={flat.title}
-              imageUrl={flat.image_url}
-            />
-          </Grid>
-        ))}
-      </Grid>
-      <Pagination
-        count={10}
-        sx={{ py: 1 }}
-        color="primary"
-      />
+      <Stack alignItems="flex-start" spacing={2.5}>
+        <Typography margin={0} variant="h1" fontWeight={500}>Flat rental, but better</Typography>
+        <Typography margin={0} variant="h5">Rent your next dream flat now</Typography>
+      </Stack>
+      <Button variant="contained">
+        <Typography p={1.1}>
+          See available flats
+        </Typography>
+      </Button>
+      <Stack direction="row" spacing={3.5} pt={4}>
+        <InfoCard title="In the Czech Republic" />
+        <InfoCard title="200 flats available" />
+      </Stack>
     </Stack>
-  );
+  )
 }

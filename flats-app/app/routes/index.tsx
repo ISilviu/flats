@@ -1,5 +1,4 @@
 import { Button, Card, Stack, Typography } from "@mui/material";
-import { Link } from "@remix-run/react";
 import AppLink from "~/src/components/AppLink";
 
 type InfoCardData = {

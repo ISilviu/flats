@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, SvgIcon, Typography, Link } from '@mui/material';
+import { Box, AppBar, Toolbar, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import AppLink from './components/AppLink';

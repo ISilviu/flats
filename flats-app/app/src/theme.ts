@@ -5,7 +5,7 @@ import { red } from '@mui/material/colors';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#387be0',
+      main: '#2D4263',
     },
     secondary: {
       main: '#19857b',
@@ -13,6 +13,33 @@ const theme = createTheme({
     error: {
       main: red.A400,
     },
+  },
+  typography: {
+    button: {
+      textTransform: 'none'
+    },
+    fontFamily: [
+      'Inter',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(',')
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          borderRadius: '7px',
+        }
+      }
+    }
   },
 });
 

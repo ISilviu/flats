@@ -1,21 +1,28 @@
 import { Box, AppBar, Toolbar, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import AppLink from './components/AppLink';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AppBar position="absolute">
+      <AppBar
+        position="absolute"
+        color="transparent"
+        elevation={0}
+      >
         <Toolbar disableGutters>
           <SvgIcon
             component={ApartmentIcon}
             fontSize="large"
             sx={{ ml: 2 }}
           />
-          <Typography pl={2}>Flats App</Typography>
+          <AppLink to="/">
+            <Typography variant="h5" pl={2}>Flatr</Typography>
+          </AppLink>
         </Toolbar>
       </AppBar>
-      <Box>
+      <Box height="100vh">
         {children}
       </Box>
     </>

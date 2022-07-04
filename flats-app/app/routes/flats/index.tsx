@@ -27,7 +27,7 @@ const extractSearchParam = (searchParams: URLSearchParams, key: string, defaultV
 
 export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
-    const pageNumber = parseInt(extractSearchParam(url.searchParams, 'page', '0'));
+    const pageNumber = parseInt(extractSearchParam(url.searchParams, 'page', '1'));
     const pageSize = parseInt(extractSearchParam(url.searchParams, 'pageSize', `${defaultPageSize}`));
 
     return json<LoaderData>({
@@ -44,7 +44,7 @@ export default function Flats() {
 
     const [params, setSearchParams] = useSearchParams();
 
-    const pageNumber = parseInt(params.get('page') ?? '0') + 1;
+    const pageNumber = parseInt(params.get('page') ?? '1');
     const pageSize = parseInt(params.get('pageSize') ?? `${defaultPageSize}`);
 
     const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
@@ -78,6 +78,9 @@ export default function Flats() {
                 sx={{ py: 1 }}
                 page={pageNumber}
                 color="primary"
+                onChange={(e, pageNumber) => setSearchParams({
+                    page: `${pageNumber}`,
+                })}
             />
         </Stack>
     );

@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             sx={{ ml: 2 }}
           />
           <AppLink to="/">
-            <Typography pl={2}>Flatr</Typography>
+            <Typography variant="h5" pl={2}>Flatr</Typography>
           </AppLink>
         </Toolbar>
       </AppBar>

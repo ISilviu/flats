@@ -6,7 +6,7 @@
     "seed": "ts-node prisma/seed.ts",
     "dev": "remix dev --debug",
     "start": "remix-serve build",
-    "crawl": "node crawler.js"
+    "crawl": "node crawler.js --inspect"
   },
   "dependencies": {
     "@emotion/cache": "^11.9.3",

@@ -1,21 +1,58 @@
 import { Grid, Pagination, Stack } from "@mui/material";
 import FlatCard from "~/src/components/FlatCard";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getFlats } from "~/models/flat.server";
+import type { LoaderFunction } from "@remix-run/node";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
+import { getFlats, getFlatsCount } from "~/models/flat.server";
+import { round } from "lodash";
+import React from "react";
 
 type LoaderData = {
     flats: Awaited<ReturnType<typeof getFlats>>;
+    flatsCount: Awaited<ReturnType<typeof getFlatsCount>>;
 };
 
-export const loader = async () => {
+const defaultPageSize = 50;
+
+const extractSearchParam = (searchParams: URLSearchParams, key: string, defaultValue: string) => {
+    let parameterValue = defaultValue;
+    if (searchParams.has(key)) {
+        parameterValue = searchParams.get(key) ?? defaultValue;
+        if (parameterValue === '') {
+            parameterValue = defaultValue;
+        }
+    }
+    return parameterValue
+};
+
+const parseIntWithDefault = (number: string, defaultValue: number) => {
+    const parsed = parseInt(number);
+    return Number.isNaN(parsed) ? defaultValue : parsed;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+    const url = new URL(request.url);
+    const pageNumber = parseIntWithDefault(extractSearchParam(url.searchParams, 'page', '1'), 1);
+    const pageSize = parseIntWithDefault(extractSearchParam(url.searchParams, 'pageSize', `${defaultPageSize}`), defaultPageSize);
+
     return json<LoaderData>({
-        flats: await getFlats(),
+        flats: await getFlats({
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+        }),
+        flatsCount: await getFlatsCount(),
     });
 };
 
 export default function Flats() {
-    const { flats } = useLoaderData() as LoaderData;
+    const { flats, flatsCount } = useLoaderData() as LoaderData;
+
+    const [params, setSearchParams] = useSearchParams();
+
+    const pageNumber = parseIntWithDefault(params.get('page') ?? '1', 1);
+    const pageSize = parseIntWithDefault(params.get('pageSize') ?? `${defaultPageSize}`, defaultPageSize);
+
+    const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
 
     return (
         <Stack
@@ -42,9 +79,13 @@ export default function Flats() {
                 ))}
             </Grid>
             <Pagination
-                count={10}
+                count={pagesCount}
                 sx={{ py: 1 }}
+                page={pageNumber}
                 color="primary"
+                onChange={(e, pageNumber) => setSearchParams({
+                    page: `${pageNumber}`,
+                })}
             />
         </Stack>
     );

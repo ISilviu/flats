@@ -36,11 +36,14 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         contained: {
-          borderRadius: '7px',
+          borderRadius: '12px',
         }
       }
     }
   },
+  shape: {
+    borderRadius: 4,
+  }
 });
 
 export default theme;

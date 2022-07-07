@@ -2,7 +2,7 @@ const { range } = require('lodash');
 const { PrismaClient } = require('@prisma/client');
 const puppeteer = require('puppeteer');
 
-const mainPageUrl = 'https://www.sreality.cz/en/search/for-sale/apartments';
+const mainPageUrl = process.env.CRAWL_PAGE_URL;
 const urls = [mainPageUrl, ...range(2, 11).map(index => `${mainPageUrl}?page=${index}`)];
 const prismaClient = new PrismaClient();
 
@@ -30,7 +30,7 @@ async function startCrawling() {
             for(let flatIndex = 0; flatIndex < flatTitles.length; ++flatIndex) {
                 flats.push({
                     title: flatTitles[flatIndex].textContent,
-                    image_url: apartmentElement.firstChild.firstChild.firstChild.firstChild.firstChild.getAttribute('src'),
+                    image_url: flatCards[flatIndex].firstChild.firstChild.firstChild.firstChild.firstChild.getAttribute('src'),
                 });
             }
 
@@ -46,6 +46,8 @@ async function startCrawling() {
     });
 
     console.log('The apartments were inserted in the database.');
+
+    await browser.close();
 }
 
 startCrawling();

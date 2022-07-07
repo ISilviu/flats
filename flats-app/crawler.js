@@ -18,7 +18,6 @@ const logger = winston.createLogger({
 async function startCrawling() {
     const browser = await puppeteer.launch({
         headless: true,
-        args: ["--disable-setuid-sandbox"],
         'ignoreHTTPSErrors': true
     });
 

@@ -27,13 +27,11 @@ async function startCrawling() {
             const flatTitles = document.getElementsByClassName('name ng-binding');
             const flatCards = document.getElementsByClassName('property ng-scope');
 
-            let apartmentIndex = 0;
-            for (const apartmentElement of flatCards) {
+            for(let flatIndex = 0; flatIndex < flatTitles.length; ++flatIndex) {
                 flats.push({
-                    title: flatTitles[apartmentIndex].textContent,
+                    title: flatTitles[flatIndex].textContent,
                     image_url: apartmentElement.firstChild.firstChild.firstChild.firstChild.firstChild.getAttribute('src'),
                 });
-                ++apartmentIndex;
             }
 
             return flats;

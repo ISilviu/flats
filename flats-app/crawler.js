@@ -12,12 +12,15 @@ const logger = winston.createLogger({
     format: winston.format.json(),
     transports: [
         new winston.transports.File({ filename: process.env.LOG_PATH }),
+        new winston.transports.Console(),
     ],
 });
 
 async function startCrawling() {
     const browser = await puppeteer.launch({
+        executablePath: '/usr/bin/google-chrome',
         headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         'ignoreHTTPSErrors': true
     });
 

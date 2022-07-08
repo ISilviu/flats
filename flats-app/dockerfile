@@ -7,9 +7,5 @@ WORKDIR /code
 COPY ./package.json /code
 RUN npm install
 COPY ./ /code
+RUN npx prisma generate
 RUN npm run build
-ENV NODE_ENV=production
-ENV DATABASE_URL="postgresql://flats_user:1q2w3e@localhost:5432/flats?schema=public"
-ENV CRAWL_PAGE_URL="https://www.sreality.cz/en/search/for-sale/apartments"
-ENV LOG_PATH="crawler.log"
-CMD ["npm", "run", "start"]

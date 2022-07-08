@@ -1,5 +1,10 @@
 version: "3"
 services:
+  crawler:
+    build: .
+    command: npm run crawl
+    depends_on:
+      - db
   db:
     image: postgres
     ports:
@@ -23,5 +28,6 @@ services:
       sh -c "npx prisma migrate dev && npm run start"
     depends_on:
       - db
+      - crawler
 volumes:
   pgdata:

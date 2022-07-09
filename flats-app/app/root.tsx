@@ -71,12 +71,12 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error!">
       <Layout>
-        <div>
+        <Box pt={10}>
           <h1>There was an error</h1>
           {process.env.NODE_ENV === 'development' ? (
             <p>{error.message}</p>
           ) : null}
-        </div>
+        </Box>
       </Layout>
     </Document>
   );

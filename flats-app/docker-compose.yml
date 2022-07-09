@@ -15,6 +15,7 @@ services:
       - .env.example
     volumes:
       - pgdata:/var/lib/posgresql/data
+    command: -p 6000
   flats:
     build: .
     ports:

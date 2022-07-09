@@ -73,9 +73,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
       <Layout>
         <div>
           <h1>There was an error</h1>
-          <p>{error.message}</p>
-          <hr />
-          <p>Hey, developer, you should replace this with what you want your users to see.</p>
+          {process.env.NODE_ENV === 'development' ? (
+            <p>{error.message}</p>
+          ) : null}
         </div>
       </Layout>
     </Document>

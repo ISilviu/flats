@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from '@remix-run/react';
 import { withEmotionCache } from '@emotion/react';
-import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
+import { Box, Stack, unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
 import theme from './src/theme';
 import ClientStyleContext from './src/ClientStyleContext';
 import Layout from './src/Layout';
@@ -71,12 +71,12 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error!">
       <Layout>
-        <div>
+        <Box pt={10}>
           <h1>There was an error</h1>
-          <p>{error.message}</p>
-          <hr />
-          <p>Hey, developer, you should replace this with what you want your users to see.</p>
-        </div>
+          {process.env.NODE_ENV === 'development' ? (
+            <p>{error.message}</p>
+          ) : null}
+        </Box>
       </Layout>
     </Document>
   );
@@ -102,10 +102,15 @@ export function CatchBoundary() {
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
       <Layout>
-        <h1>
-          {caught.status}: {caught.statusText}
-        </h1>
-        {message}
+        <Box pt={10} display="flex" justifyContent="center" alignItems="center">
+          <Stack>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <h1>{caught.status}</h1>
+              <h2>{caught.statusText}</h2>
+            </Stack>
+            {message}
+          </Stack>
+        </Box>
       </Layout>
     </Document>
   );

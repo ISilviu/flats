@@ -11,13 +11,15 @@ const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
     transports: [
-        new winston.transports.File({ filename: process.env.LOG_PATH }),
+        new winston.transports.Console(),
     ],
 });
 
 async function startCrawling() {
     const browser = await puppeteer.launch({
+        executablePath: '/usr/bin/google-chrome',
         headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         'ignoreHTTPSErrors': true
     });
 
@@ -25,17 +27,10 @@ async function startCrawling() {
 
     const page = await browser.newPage();
 
-    logger.log({
-        level: 'info',
-        message: 'Started crawling ...',
-    });
-
+    logger.info('Started crawling ...');
     for (const url of urls) {
         await page.goto(url);
-        logger.log({
-            level: 'info',
-            message: `Navigated to: ${url}`,
-        });
+        logger.info(`Navigated to: ${url}`);
 
         await page.waitForTimeout(1000);
         const currentPageFlats = await page.evaluate(() => {
@@ -45,10 +40,9 @@ async function startCrawling() {
             const flatCards = document.getElementsByClassName('property ng-scope');
 
             if (flatTitles.length != flatCards.length) {
-                logger.log({
-                    level: 'warn',
-                    message: `The flat titles count didn't match the number of flat cards found at url: ${url}\r\nThis page will be skipped to avoid errors.`,
-                });
+                logger.warn(
+                    `The flat titles count didn't match the number of flat cards found at url: ${url}\r\nThis page will be skipped to avoid errors.`
+                );
                 return flats;
             }
 
@@ -67,19 +61,13 @@ async function startCrawling() {
 
     await browser.close();
 
-    logger.log({
-        level: 'info',
-        message: `Inserting ${flats.length} flats to the database ...`,
-    });
+    logger.info(`Inserting ${flats.length} flats to the database ...`);
 
     const { count: insertedCount } = await prismaClient.flat.createMany({
         data: flats,
     });
 
-    logger.log({
-        level: 'info',
-        message: `${insertedCount} flats were successfully inserted to the database.`,
-    });
+    logger.info(`${insertedCount} flats were successfully inserted to the database.`);
 }
 
 startCrawling();

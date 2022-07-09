@@ -1,0 +1,35 @@
+version: "3"
+services:
+  crawler:
+    build: .
+    command: npm run crawl
+    environment:
+      LOG_PATH: crawler.log
+      DATABASE_URL: postgresql://flats_user:1q2w3e@db:5432/flats?schema=public
+      CRAWL_PAGE_URL: https://www.sreality.cz/en/search/for-sale/apartments
+    depends_on:
+      - db
+  db:
+    image: postgres
+    ports:
+    - "5435:5432"
+    environment:
+      POSTGRES_USER: flats_user
+      POSTGRES_DB: flats
+      POSTGRES_PASSWORD: 1q2w3e
+    volumes:
+      - pgdata:/var/lib/posgresql/data
+  flats:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://flats_user:1q2w3e@db:5432/flats?schema=public
+    command: >
+      sh -c "npx prisma migrate dev && npm run start"
+    depends_on:
+      - db
+      - crawler
+volumes:
+  pgdata:

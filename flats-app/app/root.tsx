@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from '@remix-run/react';
 import { withEmotionCache } from '@emotion/react';
-import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
+import { Box, Stack, unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
 import theme from './src/theme';
 import ClientStyleContext from './src/ClientStyleContext';
 import Layout from './src/Layout';
@@ -102,10 +102,15 @@ export function CatchBoundary() {
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
       <Layout>
-        <h1>
-          {caught.status}: {caught.statusText}
-        </h1>
-        {message}
+        <Box pt={10} display="flex" justifyContent="center" alignItems="center">
+          <Stack>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <h1>{caught.status}</h1>
+              <h2>{caught.statusText}</h2>
+            </Stack>
+            {message}
+          </Stack>
+        </Box>
       </Layout>
     </Document>
   );

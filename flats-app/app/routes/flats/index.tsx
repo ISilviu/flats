@@ -50,7 +50,7 @@ export default function Flats() {
     const [params, setSearchParams] = useSearchParams();
 
     const pageNumber = parseIntWithDefault(params.get('page') ?? '1', 1);
-    const pageSize = parseIntWithDefault(params.get('pageSize') ?? `${defaultPageSize}`, defaultPageSize);
+    const pageSize = parseIntWithDefault(params.get('pageSize') ?? defaultPageSize.toString(), defaultPageSize);
 
     const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
 

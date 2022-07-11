@@ -11,6 +11,8 @@ import { extractSearchParam, parseIntWithDefault } from "~/src/utilities";
 type LoaderData = {
     flats: Awaited<ReturnType<typeof getFlats>>;
     flatsCount: Awaited<ReturnType<typeof getFlatsCount>>;
+    pageNumber: number;
+    pageSize: number;
 };
 
 const defaultPageSize = 50;
@@ -26,18 +28,20 @@ export const loader: LoaderFunction = async ({ request }) => {
             pageSize: pageSize,
         }),
         flatsCount: await getFlatsCount(),
+        pageNumber: pageNumber,
+        pageSize: pageSize,
     });
 };
 
 export default function Flats() {
-    const { flats, flatsCount } = useLoaderData() as LoaderData;
+    const { flats, flatsCount, pageNumber, pageSize } = useLoaderData() as LoaderData;
 
-    const [params, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
 
-    const pageNumber = parseIntWithDefault(params.get('page') ?? '1', 1);
-    const pageSize = parseIntWithDefault(params.get('pageSize') ?? defaultPageSize.toString(), defaultPageSize);
-
-    const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
+    const pagesCount = React.useMemo(
+        () => round(flatsCount / pageSize),
+        [flatsCount, pageSize]
+    );
 
     return (
         <Stack

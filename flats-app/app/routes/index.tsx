@@ -1,9 +1,23 @@
 import { Button, Card, Stack, Typography } from "@mui/material";
+import { json } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { getFlatsCount } from "~/models/flat.server";
 import AppLink from "~/src/components/AppLink";
 
 type InfoCardData = {
   title: string;
 }
+
+type LoaderData = {
+  flatsCount: Awaited<ReturnType<typeof getFlatsCount>>;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return json<LoaderData>({
+    flatsCount: await getFlatsCount(),
+  });
+};
 
 function InfoCard({ title }: InfoCardData) {
   return (
@@ -23,6 +37,8 @@ function InfoCard({ title }: InfoCardData) {
 }
 
 export default function Flats() {
+  const { flatsCount } = useLoaderData() as LoaderData;
+
   return (
     <Stack
       height="100%"
@@ -44,7 +60,7 @@ export default function Flats() {
       </AppLink>
       <Stack direction="row" spacing={3.5} pt={4}>
         <InfoCard title="In the Czech Republic" />
-        <InfoCard title="200 flats available" />
+        <InfoCard title={`${flatsCount} flats available`} />
       </Stack>
     </Stack>
   )

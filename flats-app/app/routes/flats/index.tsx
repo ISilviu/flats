@@ -1,34 +1,20 @@
-import { Grid, Pagination, Stack } from "@mui/material";
-import FlatCard from "~/src/components/FlatCard";
 import { json } from "@remix-run/node";
 import type { LoaderFunction } from "@remix-run/node";
-import { useLoaderData, useSearchParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { getFlats, getFlatsCount } from "~/models/flat.server";
 import { round } from "lodash";
 import React from "react";
+import { extractSearchParam, parseIntWithDefault } from "~/src/utilities";
+import FlatsGrid from "~/src/components/FlatsGrid";
 
 type LoaderData = {
     flats: Awaited<ReturnType<typeof getFlats>>;
     flatsCount: Awaited<ReturnType<typeof getFlatsCount>>;
+    pageNumber: number;
+    pageSize: number;
 };
 
 const defaultPageSize = 50;
-
-const extractSearchParam = (searchParams: URLSearchParams, key: string, defaultValue: string) => {
-    let parameterValue = defaultValue;
-    if (searchParams.has(key)) {
-        parameterValue = searchParams.get(key) ?? defaultValue;
-        if (parameterValue === '') {
-            parameterValue = defaultValue;
-        }
-    }
-    return parameterValue
-};
-
-const parseIntWithDefault = (number: string, defaultValue: number) => {
-    const parsed = parseInt(number);
-    return Number.isNaN(parsed) ? defaultValue : parsed;
-};
 
 export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
@@ -41,52 +27,24 @@ export const loader: LoaderFunction = async ({ request }) => {
             pageSize: pageSize,
         }),
         flatsCount: await getFlatsCount(),
+        pageNumber: pageNumber,
+        pageSize: pageSize,
     });
 };
 
 export default function Flats() {
-    const { flats, flatsCount } = useLoaderData() as LoaderData;
+    const { flats, flatsCount, pageNumber, pageSize } = useLoaderData() as LoaderData;
 
-    const [params, setSearchParams] = useSearchParams();
-
-    const pageNumber = parseIntWithDefault(params.get('page') ?? '1', 1);
-    const pageSize = parseIntWithDefault(params.get('pageSize') ?? `${defaultPageSize}`, defaultPageSize);
-
-    const pagesCount = React.useMemo(() => round(flatsCount / pageSize), [flatsCount, pageSize]);
+    const pagesCount = React.useMemo(
+        () => round(flatsCount / pageSize),
+        [flatsCount, pageSize]
+    );
 
     return (
-        <Stack
-            spacing={2}
-            pt={10}
-            maxHeight="100vh"
-            alignItems="center"
-        >
-            <Grid
-                container
-                rowGap={3}
-                columnGap={1.5}
-                display="flex"
-                justifyContent="center"
-                overflow="auto"
-            >
-                {flats.map(flat => (
-                    <Grid item xs={12} md={6} lg={3} key={flat.id} display="flex" justifyContent="center">
-                        <FlatCard
-                            title={flat.title}
-                            imageUrl={flat.image_url}
-                        />
-                    </Grid>
-                ))}
-            </Grid>
-            <Pagination
-                count={pagesCount}
-                sx={{ py: 1 }}
-                page={pageNumber}
-                color="primary"
-                onChange={(e, pageNumber) => setSearchParams({
-                    page: `${pageNumber}`,
-                })}
-            />
-        </Stack>
+        <FlatsGrid
+            flats={flats}
+            pageNumber={pageNumber}
+            pagesCount={pagesCount}
+        />
     );
 }

@@ -6,7 +6,7 @@ const extractSearchParam = (searchParams: URLSearchParams, key: string, defaultV
             parameterValue = defaultValue;
         }
     }
-    return parameterValue
+    return parameterValue;
 };
 
 const parseIntWithDefault = (number: string, defaultValue: number) => {

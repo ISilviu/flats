@@ -5,6 +5,7 @@
     "build": "remix build",
     "seed": "ts-node prisma/seed.ts",
     "dev": "remix dev --debug",
+    "test": "jest",
     "start": "remix-serve build",
     "crawl": "node crawler.js --inspect"
   },
